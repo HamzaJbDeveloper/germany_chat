@@ -19,7 +19,7 @@ const findMatch = async (userId) => {
             // Fetch a random topic (commented out in your original code)
             let randomTopic;
             try {
-                const response = await axios.get("https://germany-chat.onrender.com/api/topics/getRandomTopic");
+                const response = await axios.post("https://germany-chat.onrender.com/api/topics/getRandomTopic");
                 randomTopic = response.data.randomTopic;
             } catch (error) {
                 console.error("Error fetching random topic:", error);
