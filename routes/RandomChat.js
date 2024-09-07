@@ -20,10 +20,13 @@ const findMatch = async (userId) => {
             let randomTopic;
             try {
                 const response = await axios.post("https://germany-chat.onrender.com/api/topics/getRandomTopic");
-                randomTopic = response.data.randomTopic;
+                if(response.data.status){
+                    randomTopic = response.data.randomTopic;
+                }
+                
             } catch (error) {
                 console.error("Error fetching random topic:", error);
-                randomTopic = "Feel free"; // Default topic
+                randomTopic = {title:null}; // Default topic
             }
 
             matchedPairs.push([userId, otherUserId, room, randomTopic]);
@@ -41,7 +44,7 @@ const findMatch = async (userId) => {
                 console.log("Socket 2 joined room ########## " + room);
             }
 
-            return { matchedUser: otherUserId, randomTopic, room };
+            return { matchedUser: otherUserId, randomTopic:randomTopic, room:room };
         }
     }
     return null; // No match found
@@ -120,14 +123,14 @@ router.post("/chat_random", async (req, res) => {
     });
 
     if (isAlreadyMatched) {
-        return res.status(200).json({ status: true, matchedUser, topic, room });
+        return res.status(200).json({ status: true, matchedUser, topic:topic||{title:null}, room });
     }
 
     const userDidMatchNow = await findMatch(user_id);
 
     if (userDidMatchNow) {
         const { matchedUser, randomTopic, room } = userDidMatchNow;
-        return res.status(200).json({ status: true, matchedUser, topic: randomTopic, room });
+        return res.status(200).json({ status: true, matchedUser, topic: randomTopic||{title:null}, room });
     } else {
         return res.status(200).json({ status: false, msg: "Waiting for a match" });
     }
