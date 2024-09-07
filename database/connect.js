@@ -5,11 +5,13 @@ let connection;
 const connectToDB=async function (){
     try {
         
-    const test = await mysql.createConnection({
+    const test = await mysql.createPool({
     host: 'sql7.freemysqlhosting.net',
     user: 'sql7729154',
     password: 'EG3kBmd8R4',
-    database: 'sql7729154'
+    database: 'sql7729154',
+    waitForConnections: true,
+    queueLimit: 0
   });
   connection=test;
     console.log("your database is connected to mySQL !")
