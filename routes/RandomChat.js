@@ -88,12 +88,16 @@ randomChatNamespace.on('connection', (socket) => {
                 break;
             }
         }
-        if(roomId){
-        randomChatNamespace.to(roomId).emit("chat_end");
-        matchedPairs = matchedPairs.filter(pair => !pair.includes(String(roomId)));
-        }
+       
         
     });
+
+    socket.on("userDisconnectFromChat",roomId=>{
+             if(roomId){
+                randomChatNamespace.to(roomId).emit("chat_end");
+                matchedPairs = matchedPairs.filter(pair => !pair.includes(String(roomId)));
+            }
+    })
 });
 
 // POST request handler for random chat
