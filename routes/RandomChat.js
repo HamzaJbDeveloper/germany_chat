@@ -71,6 +71,7 @@ randomChatNamespace.on('connection', (socket) => {
         console.log("User left:", user_id);
         console.log("User leaving room:", roomId);
         randomChatNamespace.to(roomId).emit("chat_end");
+        randomChatNamespace.to(roomId).emit("user_leave",user_id);
         matchedPairs = matchedPairs.filter(pair => !pair.includes(String(user_id)));
     });
 
