@@ -10,8 +10,7 @@ const connectToDB=async function (){
     user: 'sql7729154',
     password: 'EG3kBmd8R4',
     database: 'sql7729154',
-    waitForConnections: true,
-    queueLimit: 0
+    waitForConnections: true
   });
   connection=test;
     console.log("your database is connected to mySQL !")
