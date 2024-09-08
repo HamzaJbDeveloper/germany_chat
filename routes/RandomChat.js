@@ -66,9 +66,12 @@ randomChatNamespace.on('connection', (socket) => {
 
     //handel user window close
 
-    socket.on("socketLeave", (user_id) => {
+    socket.on("socketLeave", ({user_id,roomId}) => {
         delete usersSocket[user_id];
         console.log("User left:", user_id);
+        console.log("User leaving room:", roomId);
+        randomChatNamespace.to(roomId).emit("chat_end");
+        matchedPairs = matchedPairs.filter(pair => !pair.includes(String(user_id)));
     });
 
     // Handle receiving a message from a user
@@ -92,12 +95,6 @@ randomChatNamespace.on('connection', (socket) => {
         
     });
 
-    socket.on("userDisconnectFromChat",roomId=>{
-             if(roomId){
-                randomChatNamespace.to(roomId).emit("chat_end");
-                matchedPairs = matchedPairs.filter(pair => !pair.includes(String(roomId)));
-            }
-    })
 });
 
 // POST request handler for random chat
