@@ -78,7 +78,7 @@ randomChatNamespace.on('connection', (socket) => {
     });
 
     // Handle user disconnection
-    socket.on('disconnect', () => {
+    socket.on('disconnect', (roomId) => {
         // console.log('A user disconnected from /random_chat:', socket.id);
         // Find the user by socket and remove
         for (let userId in usersSocket) {
@@ -88,6 +88,11 @@ randomChatNamespace.on('connection', (socket) => {
                 break;
             }
         }
+        if(roomId){
+        randomChatNamespace.to(roomId).emit("chat_end");
+        matchedPairs = matchedPairs.filter(pair => !pair.includes(String(roomId)));
+        }
+        
     });
 });
 
